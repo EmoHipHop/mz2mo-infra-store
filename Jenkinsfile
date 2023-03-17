@@ -6,7 +6,7 @@ pipeline {
     environment {
         PROJECT_NAME = "mz2mo-server"
 
-        DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1086219891465539634/R2u8otPTZ7aFKBTSy-X3jZnGWkdifP-ltjI-0hyw9BIQDgES-aHLYI9MnmXjDRFnF3wJ"
+        DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1086260985817481266/5swydIKQkckpSyfT7VDMvsKd2BEz_ycEOQZNLtgeStQiTnGDuvU8_PZyhWuo2nSEIbP_"
 
         DOCKER_CREDENTIAL_ID = "docker"
         
@@ -87,7 +87,7 @@ pipeline {
             }
             steps {
                 sh "docker ps -q --filter \"name=${PROD_DOCKER_CONTAINER_NAME}\" || grep -q . && docker stop ${PROD_DOCKER_CONTAINER_NAME} && docker rm ${PROD_DOCKER_CONTAINER_NAME} || true"
-                withCredentials([file(credentialsId: "${PROD_DOCKER_ENV_FILE_CREDENTIAL_ID}", variable: 'DOCKER_ENV_FILE')]) {
+                withCredentials([file(credentialsId: "${PROD_DOCKER_ENV_FILE_CREDENTIAL_ID}", variable: 'DOCKER_ENV_FILE')]) {  
                     sh "docker run -e SPRING_PROFILE=${env.SPRING_PROFILE} ${readFile(DOCKER_ENV_FILE).trim().split('\n').collect { "-e ${it}" }.join(' ')} -p 10000:8080 --name=${PROD_DOCKER_CONTAINER_NAME}  -d ${PROD_DOCKER_IMAGE_NAME}"
                 }
             }
