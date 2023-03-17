@@ -56,7 +56,7 @@ pipeline {
 
         stage('Develop Docker Run') {
             when {
-                { it -> branch 'develop' }
+                expression { return env.BRANCH_NAME ==~ /develop/ }
             }
             steps {
                 sh "docker ps -q --filter \"name=${DEV_DOCKER_CONTAINER_NAME}\" || grep -q . && docker stop ${DEV_DOCKER_CONTAINER_NAME} && docker rm ${DEV_DOCKER_CONTAINER_NAME} || true"
@@ -66,7 +66,7 @@ pipeline {
 
         stage('Production Docker Build') {
             when {
-                expression { return env.BRANCH_NAME ==~ /release\/.*/ }
+                expression { return env.BRANCH_NAME ==~ /develop/ }
             }
             steps {
                 script {
