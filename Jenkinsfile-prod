@@ -6,7 +6,7 @@ pipeline {
     environment {
         PROJECT_NAME = "mz2mo-server"
 
-        DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1086205883228364800/PNjuCo4xDIrbLLIxx8G36uUKlGReMjvQ95Qc-t-XOMPuz-PiZfwgosBpqRvryQs2Bzer"
+        DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1086219891465539634/R2u8otPTZ7aFKBTSy-X3jZnGWkdifP-ltjI-0hyw9BIQDgES-aHLYI9MnmXjDRFnF3wJ"
 
         DOCKER_CREDENTIAL_ID = "docker"
         DOCKER_IMAGE_NAME = "mz2mo/mz2mo-server-prod"
