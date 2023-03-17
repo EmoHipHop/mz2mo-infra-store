@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     app = docker.build(DEV_DOCKER_IMAGE_NAME)
-                    docker.withRegistry('https://registry.hub.docker.com', DEV_DOCKER_CREDENTIAL_ID) {
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIAL_ID) {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
@@ -71,7 +71,7 @@ pipeline {
             steps {
                 script {
                     app = docker.build(DEV_DOCKER_IMAGE_NAME)
-                    docker.withRegistry('https://registry.hub.docker.com', DEV_DOCKER_CREDENTIAL_ID) {
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIAL_ID) {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
