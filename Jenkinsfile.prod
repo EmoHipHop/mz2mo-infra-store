@@ -8,26 +8,15 @@ pipeline {
 
         DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1083501571083599873/4prm5Aoo_G84zQjvDhQ-i4lTWipLHArrTFVVx9UxXf7rk5QDCk2FWoXRHkh6uXk_jzCt"
 
-        GITHUB_CREDENTIAL_ID = "github"
-        GITHUB_BRANCH = "develop"
-        GITHUB_URL = "https://github.com/EmoHipHop/mz2mo-server"
-
         DOCKER_CREDENTIAL_ID = "docker"
-        DOCKER_IMAGE_NAME = "mz2mo/mz2mo-server-dev"
-        DOCKER_CONTAINER_NAME = "mz2mo-server-dev"
+        DOCKER_IMAGE_NAME = "mz2mo/mz2mo-server-prod"
+        DOCKER_CONTAINER_NAME = "mz2mo-server-prod"
 
-        DOCKER_ENV_FILE_CREDENTIAL_ID = 'docker-env-file-dev'
+        DOCKER_ENV_FILE_CREDENTIAL_ID = 'docker-env-file-prod'
 
-        SPRING_PROFILE = "dev"
+        SPRING_PROFILE = "prod"
     }
     stages {
-        stage('Github Checkout') {
-            steps {
-                git branch: GITHUB_BRANCH,
-                    url: GITHUB_URL
-            }
-        }
-
         stage('Prepare Permission') {
             steps {
                 sh 'chmod +x gradlew'
