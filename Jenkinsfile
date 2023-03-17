@@ -41,7 +41,7 @@ pipeline {
 
         stage('Develop Docker Build') {
             when {
-                { it -> branch 'develop' }
+                expression { return env.BRANCH_NAME ==~ /develop/ }
             }
             steps {
                 script {
@@ -66,7 +66,7 @@ pipeline {
 
         stage('Production Docker Build') {
             when {
-                expression { return env.BRANCH_NAME ==~ /develop/ }
+                expression { return env.BRANCH_NAME ==~ /release\/.*/ }
             }
             steps {
                 script {
