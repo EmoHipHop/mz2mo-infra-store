@@ -41,7 +41,7 @@ pipeline {
 
         stage('Develop Docker Build') {
             when {
-                { branch 'develop' }
+                { it -> branch 'develop' }
             }
             steps {
                 script {
@@ -56,7 +56,7 @@ pipeline {
 
         stage('Develop Docker Run') {
             when {
-                { branch 'develop' }
+                { it -> branch 'develop' }
             }
             steps {
                 sh "docker ps -q --filter \"name=${DEV_DOCKER_CONTAINER_NAME}\" || grep -q . && docker stop ${DEV_DOCKER_CONTAINER_NAME} && docker rm ${DEV_DOCKER_CONTAINER_NAME} || true"
