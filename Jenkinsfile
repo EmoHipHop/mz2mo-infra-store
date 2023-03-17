@@ -60,7 +60,10 @@ pipeline {
             }
             steps {
                 sh "docker ps -q --filter \"name=${DEV_DOCKER_CONTAINER_NAME}\" || grep -q . && docker stop ${DEV_DOCKER_CONTAINER_NAME} && docker rm ${DEV_DOCKER_CONTAINER_NAME} || true"
-                sh "docker run -e SPRING_PROFILE=${env.SPRING_PROFILE} --env-file=${DEV_DOCKER_ENV_FILE_CREDENTIAL_ID} -p 8081:8080 --name=${DEV_DOCKER_CONTAINER_NAME}  -d ${DEV_DOCKER_IMAGE_NAME}"
+                withCredentials([file(credentialsId: ${DEV_DOCKER_ENV_FILE_CREDENTIAL_ID}, variable: 'DOCKER_ENV_FILE')]) {
+                    def envArgs = readFile(DOCKER_ENV_FILE).trim().split('\n').collect { "-e ${it}" }.join(' ')
+                    sh "docker run -e SPRING_PROFILE=${env.SPRING_PROFILE} ${envArgs} -p 13000:8080 --name=${DEV_DOCKER_CONTAINER_NAME}  -d ${DEV_DOCKER_IMAGE_NAME}"
+                }
             }
         }
 
@@ -84,8 +87,11 @@ pipeline {
                 expression { return env.BRANCH_NAME ==~ /release\/.*/ }
             }
             steps {
-                sh "docker ps -q --filter \"name=${DEV_DOCKER_CONTAINER_NAME}\" || grep -q . && docker stop ${DEV_DOCKER_CONTAINER_NAME} && docker rm ${DEV_DOCKER_CONTAINER_NAME} || true"
-                sh "docker run -e SPRING_PROFILE=${env.SPRING_PROFILE} --env-file=${DEV_DOCKER_ENV_FILE_CREDENTIAL_ID} -p 8081:8080 --name=${DEV_DOCKER_CONTAINER_NAME}  -d ${DEV_DOCKER_IMAGE_NAME}"
+                sh "docker ps -q --filter \"name=${PROD_DOCKER_CONTAINER_NAME}\" || grep -q . && docker stop ${PROD_DOCKER_CONTAINER_NAME} && docker rm ${PROD_DOCKER_CONTAINER_NAME} || true"
+                withCredentials([file(credentialsId: ${PROD_DOCKER_ENV_FILE_CREDENTIAL_ID}, variable: 'DOCKER_ENV_FILE')]) {
+                    def envArgs = readFile(DOCKER_ENV_FILE).trim().split('\n').collect { "-e ${it}" }.join(' ')
+                    sh "docker run -e SPRING_PROFILE=${env.SPRING_PROFILE} ${envArgs} -p 10000:8080 --name=${PROD_DOCKER_CONTAINER_NAME}  -d ${PROD_DOCKER_IMAGE_NAME}"
+                }
             }
         }
     }
