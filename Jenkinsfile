@@ -34,6 +34,9 @@ pipeline {
         }
 
         stage('Gradle Build') {
+            when {
+                expression { return env.BRANCH_NAME ==~ /release\/.*/ || env.BRANCH_NAME ==~ /develop/ }
+            }
             steps {
                 sh './gradlew clean build -x test'
             }
