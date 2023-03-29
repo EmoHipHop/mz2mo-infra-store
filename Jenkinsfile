@@ -64,7 +64,7 @@ pipeline {
             steps {
                 sh "docker ps -q --filter \"name=${DEV_DOCKER_CONTAINER_NAME}\" || grep -q . && docker stop ${DEV_DOCKER_CONTAINER_NAME} && docker rm ${DEV_DOCKER_CONTAINER_NAME} || true"
                 withCredentials([file(credentialsId: "${DEV_DOCKER_ENV_FILE_CREDENTIAL_ID}", variable: 'DOCKER_ENV_FILE')]) {
-                    sh "docker run -e SPRING_PROFILE=${env.SPRING_PROFILE} ${readFile(DOCKER_ENV_FILE).trim().split('\n').collect { "-e ${it}" }.join(' ')} -p 13000:8080 --name=${DEV_DOCKER_CONTAINER_NAME}  -d ${DEV_DOCKER_IMAGE_NAME}"
+                    sh "docker run -e SPRING_PROFILE=${env.SPRING_PROFILE} ${readFile(DOCKER_ENV_FILE).trim().split('\n').collect { "-e ${it}" }.join(' ').replaceAll('\r\n', '')} -p 13000:8080 --name=${DEV_DOCKER_CONTAINER_NAME}  -d ${DEV_DOCKER_IMAGE_NAME}"
                 }
             }
         }
